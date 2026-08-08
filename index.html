@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VMS Energy · Expo ATAM 2026</title>
+<style>
+  :root{
+    --navy:#0A1430; --navy2:#0F1D40; --gold:#E3A92B; --led:#34A6FF;
+    --paper:#F5F7FB; --muted:#9FB0D0; --line:rgba(255,255,255,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -10%,var(--navy2),var(--navy));
+    color:var(--paper); min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:48px 20px; line-height:1.5;
+  }
+  .wrap{width:100%; max-width:760px}
+  .eyebrow{color:var(--gold); font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    font-size:12px; margin-bottom:12px}
+  h1{font-size:clamp(28px,5vw,44px); font-weight:800; line-height:1.1; margin-bottom:8px}
+  .sub{color:var(--muted); font-size:15px; margin-bottom:36px}
+  .grid{display:grid; gap:14px}
+  a.card{
+    display:flex; align-items:center; gap:16px; text-decoration:none; color:inherit;
+    background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  a.card:hover{transform:translateY(-2px); border-color:var(--led); background:rgba(52,166,255,.08)}
+  .num{flex:0 0 auto; width:40px; height:40px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center; font-weight:800;
+    background:linear-gradient(135deg,var(--led),#1b6fd0); color:#fff; font-size:15px}
+  .card.primary .num{background:linear-gradient(135deg,var(--gold),#b6821c)}
+  .txt{flex:1 1 auto}
+  .txt b{display:block; font-size:16px; font-weight:700}
+  .txt span{display:block; color:var(--muted); font-size:13px; margin-top:2px}
+  .arrow{color:var(--muted); font-size:20px}
+  .section-label{color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    margin:30px 0 10px; font-weight:700}
+  footer{margin-top:40px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:20px}
+  footer a{color:var(--led); text-decoration:none}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">XLVI Convención y Expo ATAM 2026 · WTC Veracruz</div>
+    <h1>VMS Energy</h1>
+    <p class="sub">Del molino a la subestación, una sola responsabilidad. Selecciona una pieza para verla.</p>
+
+    <div class="grid">
+      <a class="card primary" href="stand-ATAM-2026.html">
+        <div class="num">★</div>
+        <div class="txt"><b>Stand interactivo ATAM 2026</b><span>Landing principal · puntos, rayos-X y portafolio</span></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="card" href="Ficha%20Informativa%20AZUCARERO%20-%20VMS%20Energy.html">
+        <div class="num">1</div>
+        <div class="txt"><b>Ficha informativa · Sector azucarero</b><span>Resumen de una página</span></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="card" href="Caso%20de%20Exito%20Ingenio%20Tamazula%20-%20Standalone.html">
+        <div class="num">2</div>
+        <div class="txt"><b>Caso de éxito · Ingenio Tamazula</b><span>Variador regenerativo 300 HP</span></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="card" href="webar-stand/index.html">
+        <div class="num">3</div>
+        <div class="txt"><b>Realidad Aumentada · Banco de pruebas</b><span>Visor 3D + AR sin app (mejor desde el móvil)</span></div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+
+    <footer>
+      VMS Energy · <a href="mailto:contacto@vmsenergy.com">contacto@vmsenergy.com</a> · <a href="https://vmsenergy.com">vmsenergy.com</a>
+    </footer>
+  </div>
+</body>
+</html>
