@@ -1036,6 +1036,18 @@
       <p class="cn">EcoVadis Sustainability Rating (Committed, jun 2025) · CDP Accredited Provider (2023-D · 2024-B · 2025-Pending) · Pro Integridad Empresas · Miembro del Pacto Mundial de las Naciones Unidas a través de Red México (desde julio 2026) · ODS · Década de Acción.</p>
     </div>
   </div>
+  <div class="wrap reveal">
+    <style>
+      .sos-op .sos-note{display:flex;align-items:flex-start;gap:14px;margin-top:22px;background:linear-gradient(180deg,rgba(227,169,43,.07),transparent);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:15px 18px}
+      .sos-op .sos-note svg{flex:none;width:26px;height:26px;color:var(--gold);margin-top:1px}
+      .sos-op .sos-note p{margin:0;font-size:13px;line-height:1.55;color:var(--muted)}
+      .sos-op .sos-note b{color:var(--paper);font-weight:600}
+    </style>
+    <div class="sos-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <p><b>Integridad y eficiencia.</b> Este stand se desarrolló por <b>concurso abierto</b> (VMS Energy Marketing Team &amp; Out of The Box) — procuración transparente en línea con <b>ISO 37001</b> — y la reutilización de materiales de la <b>RIM 2026</b> y la <b>Copa de Golf del CMP</b> redujo además los <b>costos de logística, empaque y envío</b> de equipos.</p>
+    </div>
+  </div>
 </section>
 
 <script>
@@ -1063,13 +1075,22 @@
         <div class="row"><label for="f-name">Nombre</label><input id="f-name" type="text" placeholder="Tu nombre"></div>
         <div class="row"><label for="f-comp">Empresa</label><input id="f-comp" type="text" placeholder="Operación / compañía"></div>
         <div class="row"><label for="f-mail">Correo</label><input id="f-mail" type="email" placeholder="nombre@empresa.com"></div>
+        <div class="row"><label for="f-phone">Teléfono / WhatsApp</label><input id="f-phone" type="tel" placeholder="+52 ..."></div>
+        <div class="row"><label for="f-role">Puesto <span style="opacity:.55">(opcional)</span></label><input id="f-role" type="text" placeholder="Cargo / área"></div>
         <div class="row"><label for="f-int">Interés principal</label>
           <select id="f-int">
+            <option>EPC eléctrico integral</option>
+            <option>Subestaciones y acometidas MT/AT</option>
             <option>Almacenamiento BESS</option>
             <option>Generación solar / híbrido</option>
+            <option>Cogeneración / modernización de planta</option>
+            <option>Automatización PLC/SCADA y control</option>
+            <option>Tableros, distribución y centros de carga</option>
+            <option>Cables KEI (MT/AT)</option>
+            <option>Transformadores</option>
             <option>Servicio y reconstrucción de motores</option>
-            <option>EPC eléctrico integral</option>
             <option>Eficiencia energética ISO 50001</option>
+            <option>Otro / asesoría general</option>
           </select>
         </div>
         <button class="submit" id="submitBtn">Agendar visita técnica</button>
@@ -1079,6 +1100,7 @@
         <div class="big">¡Gracias!</div>
         <p style="color:#bcc8e6;margin-top:8px">Recibimos tus datos. El equipo de VMS Energy se pondrá en contacto contigo.</p>
       </div>
+      <p class="lead-admin" style="margin-top:12px;font-size:11px;text-align:center;font-family:'Space Mono',monospace;letter-spacing:.04em"><a href="#" id="exportLeads" style="color:#6b7ba6;text-decoration:underline">Descargar leads (Excel / CSV)</a> <span id="leadCount" style="color:#6b7ba6"></span></p>
     </div>
   </div>
 </section>
@@ -1533,25 +1555,37 @@ BRANDS.forEach(b=>{
 // Pega abajo la URL del Web App de Apps Script (Deploy -> Web app, termina en /exec).
 // El correo destino (contacto@vmsenergy.com) se define DENTRO del script, no aquí.
 const FORM_ENDPOINT='https://script.google.com/macros/s/TU_ID_AQUI/exec';
+const LEADS_KEY='vms_atam_leads';
+function saveLead(l){try{var a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');a.push(l);localStorage.setItem(LEADS_KEY,JSON.stringify(a));}catch(e){}}
+function updateLeadCount(){try{var a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');var el=document.getElementById('leadCount');if(el)el.textContent=a.length?('· '+a.length+' guardado'+(a.length>1?'s':'')):'';}catch(e){}}
+function exportLeads(){var a=[];try{a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');}catch(e){}if(!a.length){alert('Aún no hay leads guardados en este dispositivo.');return;}
+  var cols=['fecha','nombre','empresa','puesto','correo','telefono','interes'];
+  var head=['Fecha','Nombre','Empresa','Puesto','Correo','Teléfono','Interés principal'];
+  var esc=function(v){v=(v==null?'':String(v));return '"'+v.replace(/"/g,'""')+'"';};
+  var rows=[head.map(esc).join(',')];
+  a.forEach(function(l){rows.push(cols.map(function(c){return esc(l[c]);}).join(','));});
+  var csv='\ufeff'+rows.join('\r\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download='leads-vms-atam.csv';document.body.appendChild(link);link.click();document.body.removeChild(link);URL.revokeObjectURL(url);}
 const submitBtn=document.getElementById('submitBtn');
 if(submitBtn){
   submitBtn.addEventListener('click',async()=>{
     const err=document.getElementById('formErr');
-    const val=id=>(document.getElementById(id).value||'').trim();
-    const nombre=val('f-name'), empresa=val('f-comp'), correo=val('f-mail'), interes=document.getElementById('f-int').value;
+    const val=id=>{var e=document.getElementById(id);return e?(e.value||'').trim():'';};
+    const nombre=val('f-name'), empresa=val('f-comp'), correo=val('f-mail'), telefono=val('f-phone'), puesto=val('f-role'), interes=document.getElementById('f-int').value;
     const showErr=m=>{err.textContent=m;err.style.display='block';};
     if(!nombre||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)){showErr('Ingresa tu nombre y un correo válido.');return;}
-    err.style.display='none'; submitBtn.disabled=true; const lbl=submitBtn.textContent; submitBtn.textContent='Enviando…';
-    try{
-      await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new URLSearchParams({nombre,empresa,correo,interes})});
-      document.getElementById('formFields').style.display='none';
-      document.getElementById('formOk').classList.add('show');
-    }catch(e){
-      submitBtn.disabled=false; submitBtn.textContent=lbl;
-      showErr('No se pudo enviar. Intenta de nuevo o escríbenos a contacto@vmsenergy.com.');
-    }
+    err.style.display='none';
+    const lead={fecha:new Date().toISOString().slice(0,19).replace('T',' '),nombre,empresa,puesto,correo,telefono,interes};
+    saveLead(lead); updateLeadCount();
+    document.getElementById('formFields').style.display='none';
+    document.getElementById('formOk').classList.add('show');
+    try{ if(FORM_ENDPOINT.indexOf('TU_ID_AQUI')<0){ await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new URLSearchParams(lead)}); } }catch(e){}
   });
 }
+var _exp=document.getElementById('exportLeads'); if(_exp){_exp.addEventListener('click',function(e){e.preventDefault();exportLeads();});}
+updateLeadCount();
 (function(){
   var sb=document.getElementById('scanBtn'),fr=document.getElementById('frame'),si=document.getElementById('scanInfo');
   if(sb&&fr){sb.addEventListener('click',function(){
