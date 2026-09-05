@@ -1137,6 +1137,9 @@
             <option>Otro / asesoría general</option>
           </select>
         </div>
+        <div style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true">
+          <label>No llenar este campo<input type="text" id="f-hp" name="hp" tabindex="-1" autocomplete="off"></label>
+        </div>
         <button class="submit" id="submitBtn">Agendar visita técnica</button>
         <p class="note-small" id="formErr" style="display:none;color:#e98b7d"></p>
       </div>
@@ -1630,7 +1633,8 @@ BRANDS.forEach(b=>{
 // === Envío del formulario de lead (Google Apps Script) ===
 // Pega abajo la URL del Web App de Apps Script (Deploy -> Web app, termina en /exec).
 // El correo destino (contacto@vmsenergy.com) se define DENTRO del script, no aquí.
-const FORM_ENDPOINT=https://script.google.com/macros/s/AKfycbxbYxYmiaNLlP-Xn3Fc80msNsvBOdMLZOAdC8YfRBsNBsl5WaoOuLwbaBoCfpQmt32LPA/exec;
+const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbxbYxYmiaNLlP-Xn3Fc80msNsvBOdMLZOAdC8YfRBsNBsl5WaoOuLwbaBoCfpQmt32LPA/exec';
+const FORM_KEY='vms-atam26-9f3c1a7e';
 const LEADS_KEY='vms_atam_leads';
 function saveLead(l){try{var a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');a.push(l);localStorage.setItem(LEADS_KEY,JSON.stringify(a));}catch(e){}}
 function updateLeadCount(){try{var a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');var el=document.getElementById('leadCount');if(el)el.textContent=a.length?('· '+a.length+' guardado'+(a.length>1?'s':'')):'';}catch(e){}}
@@ -1657,7 +1661,7 @@ if(submitBtn){
     saveLead(lead); updateLeadCount();
     document.getElementById('formFields').style.display='none';
     document.getElementById('formOk').classList.add('show');
-    try{ if(FORM_ENDPOINT.indexOf('TU_ID_AQUI')<0){ await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new URLSearchParams(lead)}); } }catch(e){}
+    try{ if(FORM_ENDPOINT.indexOf('TU_ID_AQUI')<0){ await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',body:new URLSearchParams(Object.assign({},lead,{k:FORM_KEY,hp:(document.getElementById('f-hp')||{}).value||''}))}); } }catch(e){}
   });
 }
 var _exp=document.getElementById('exportLeads'); if(_exp){_exp.addEventListener('click',function(e){e.preventDefault();exportLeads();});}
