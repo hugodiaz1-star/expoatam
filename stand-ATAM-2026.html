@@ -1633,7 +1633,7 @@ BRANDS.forEach(b=>{
 // === Envío del formulario de lead (Google Apps Script) ===
 // Pega abajo la URL del Web App de Apps Script (Deploy -> Web app, termina en /exec).
 // El correo destino (contacto@vmsenergy.com) se define DENTRO del script, no aquí.
-const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbxbYxYmiaNLlP-Xn3Fc80msNsvBOdMLZOAdC8YfRBsNBsl5WaoOuLwbaBoCfpQmt32LPA/exec';
+const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbzUl6ONsTYiUAh1UvcYom7ZTPs9TQZg_D7T5iGyQNnQ7E1gFJTZ5KUfv-JYZ9R3akMbTA/exec';
 const FORM_KEY='vms-atam26-9f3c1a7e';
 const LEADS_KEY='vms_atam_leads';
 function saveLead(l){try{var a=JSON.parse(localStorage.getItem(LEADS_KEY)||'[]');a.push(l);localStorage.setItem(LEADS_KEY,JSON.stringify(a));}catch(e){}}
